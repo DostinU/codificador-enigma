@@ -12,7 +12,7 @@ while True:
     elif texto[0:7] == "setkey ":
         llave = texto[7:len(texto)]
         numeros = "0123456789"
-        hay_numero = False
+        hay_numero = False #Validación del setkey
         for i in llave:
             for n in numeros:
                 if i == n:
@@ -38,6 +38,7 @@ while True:
 
     else:
         print("ERROR! Expresión no valida")
+        
 
 
     
