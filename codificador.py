@@ -2,30 +2,97 @@ print("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ Bienvenido al codificador !!!!!!!!!!!!!!!"
 print("Creadores: Dostin Umaña Y Carlos Escobar")
 print("Codificador Enigma")
 
-def cifrarTexto(llave,texto):
-    
-    fila = 0
-    columna = 0
+def cifrarTexto(llave, textoACifrar):
     text_codfificado = ''
-    contador = 0
-    abc = lista[0]
-#Hola
-    for i in texto:
+    abc = lista[0]  # se asume que lista es una matriz y lista[0] es el abecedario
+    contadorLlave = 0  # para recorrer la llave
+
+    for pos1 in range(0, len(textoACifrar), 1):
+        i = textoACifrar[pos1]
+
         if i in abc:
-            columna = abc.index(i)
-            break
-#lemon            
-    for t in llave:
-        abc = lista[contador][0]
-        fila = contador
-        if t == abc:
-            text_codfificado += lista[fila][columna]
-            break
-        contador += 1
+            contador1 = 0  # reiniciar para cada letra del texto
+    
+            for letraAbc in abc:
+                if i == letraAbc:
+                    columna = contador1
+                    letraLlave = llave[contadorLlave % len(llave)] # repite cada letra de la llave para el texto, en resumen se cicla la clave para que haya una letra de la misma para cada letra del texto
+                    contador = 0  # reiniciar para cada búsqueda de fila
+
+                    for fila in lista:
+                        if letraLlave == fila[0]:
+                            text_codfificado += fila[columna]
+                            break
+                        contador += 1
+
+                    contadorLlave += 1
+                    break  # pasamos a la siguiente letra del texto
+                contador1 += 1
+
+        else:
+            text_codfificado += i # copia todo lo que no sea una letra del abecedario dado
     print(text_codfificado)
     return text_codfificado
-       
 
+# def cifrarTexto(llave,textoACifrar):
+    
+#     text_codfificado = ''
+#     contador = 0
+#     contador1 = 0
+#     abc = lista[0]
+# #Hola
+#     for pos1 in range(0,len(textoACifrar),1):
+#         i = textoACifrar[pos1]
+#         contador1 = 0
+#         if i == abc[0][contador1]:
+#             columna = contador1
+#             print(columna)  
+#             for pos in range(0,len(llave),1):
+#                 t = llave[pos]
+#                 print(t)
+#                 if t == abc[contador][0]:
+#                     text_codfificado += lista[contador][columna]
+#                     pos = contador  
+#                     print(text_codfificado)
+#                 contador+=1
+#                 break
+#         contador1+=1      
+            
+            
+# #lemon            
+      
+
+#     print(text_codfificado)
+#     return text_codfificado
+
+def descifrarTexto(llave, textoAdecifrar):
+    texto_descifrado = ''
+    abc = lista[0]  # lista[0] es el abecedario
+    contadorLlave = 0
+
+    for pos1 in range(len(textoAdecifrar)):
+        i = textoAdecifrar[pos1]
+
+        if i in abc:
+            letraLlave = llave[contadorLlave % len(llave)]
+
+            for fila in lista:
+                if fila[0] == letraLlave:
+                    col = 0
+                    for letra in fila:
+                        if letra == i:
+                            letraOriginal = abc[col]
+                            texto_descifrado += letraOriginal
+                            break
+                        col += 1
+                    break
+
+            contadorLlave += 1
+        else:
+            texto_descifrado += i  # copiar tal cual números, espacios, etc.
+
+    print(texto_descifrado)
+    return texto_descifrado
 
 #Lista
 lista = [
@@ -79,12 +146,15 @@ while True:
      
 
     elif texto[0:12] == "encode-text ":
-        cifrarTexto(texto,llave)
+        textoACifrar = texto[12:len(texto)]
+        cifrarTexto(llave,textoACifrar)
 
     elif texto[0:12] == "encode-file ":   
         print("Archivo a cifrar")
 
-    elif texto[0:12] == "decode-text ":   
+    elif texto[0:12] == "decode-text ":
+        textoAdecifrar = texto[12:len(texto)]
+        descifrarTexto(llave, textoAdecifrar)   
         print("Texto a descifrar")
 
     elif texto[0:12] == "decode-file ":   
