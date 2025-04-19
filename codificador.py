@@ -5,23 +5,31 @@ print("Codificador Enigma")
 def cifrarTexto(llave,texto):
     
     fila = 0
-    pos = 0
     columna = 0
     text_codfificado = ''
+    contador = 0
+    abc = lista[0]
+#Hola
+    for i in texto:
+        if i in abc:
+            columna = abc.index(i)
+            break
+#lemon            
+    for t in llave:
+        abc = lista[contador][0]
+        fila = contador
+        if t == abc:
+            text_codfificado += lista[fila][columna]
+            break
+        contador += 1
+    print(text_codfificado)
+    return text_codfificado
+       
 
-    for i in llave:
-        if lista[fila][pos] == i:
-            for t in texto:
-                if lista[fila][columna] == t:
-                    letra = lista[fila][columna]
-                    text_codfificado += letra
-                else:
-                    columna +=1    
-        else:
-            fila+= 1        
-    return print(text_codfificado)
 
-lista = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+#Lista
+lista = [
+['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
 ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a'],
 ['c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b'],
 ['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b', 'c'],
@@ -48,6 +56,7 @@ lista = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
 ['y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x'],
 ['z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v','w','x','y']]
 
+
 while True:
     texto = input("codificador >> ").lower().strip()
     if texto == "quit":
@@ -70,7 +79,7 @@ while True:
      
 
     elif texto[0:12] == "encode-text ":
-        cifrarTexto(llave,texto)
+        cifrarTexto(texto,llave)
 
     elif texto[0:12] == "encode-file ":   
         print("Archivo a cifrar")
