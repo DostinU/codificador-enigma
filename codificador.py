@@ -2,6 +2,25 @@ print("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ Bienvenido al codificador !!!!!!!!!!!!!!!"
 print("Creadores: Dostin Umaña Y Carlos Escobar")
 print("Codificador Enigma")
 
+def cifrarTexto(llave,texto):
+    
+    fila = 0
+    pos = 0
+    columna = 0
+    text_codfificado = ''
+
+    for i in llave:
+        if lista[fila][pos] == i:
+            for t in texto:
+                if lista[fila][columna] == t:
+                    letra = lista[fila][columna]
+                    text_codfificado += letra
+                else:
+                    columna +=1    
+        else:
+            fila+= 1        
+    return print(text_codfificado)
+
 lista = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
 ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a'],
 ['c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a', 'b'],
@@ -51,7 +70,7 @@ while True:
      
 
     elif texto[0:12] == "encode-text ":
-        print("Texto a cifrar")
+        cifrarTexto(llave,texto)
 
     elif texto[0:12] == "encode-file ":   
         print("Archivo a cifrar")
@@ -65,7 +84,9 @@ while True:
     else:
         print("ERROR! Expresión no valida")
         
-#def cifrarTexto(llave,texto):
+
+        
+
 
 
 
