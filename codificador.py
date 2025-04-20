@@ -1,10 +1,23 @@
 print("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ Bienvenido al codificador !!!!!!!!!!!!!!!")
 print("Creadores: Dostin Umaña Y Carlos Escobar")
 print("Codificador Enigma")
+def letra_con_tilde(texto):
+    tildes = "áéíóúÁÉÍÓÚ"
+    letras = "aeiouAEIOU"
+    texto_modificado = ""
+
+    for l in texto:
+        if l in tildes:
+            pos = tildes.index(l)
+            letra = letras[pos]  # Reemplaza la letra tildada con la letra sin tilde
+            texto_modificado += "/" + letra  # Reemplaza la letra tildada con / + letra
+        else:
+            texto_modificado += l  # Conserva la letra original si no tiene tilde
+    return texto_modificado
 
 def cifrarTexto(llave, textoACifrar):
     text_codfificado = ''
-    abc = lista[0]  # se asume que lista es una matriz y lista[0] es el abecedario
+    abc = lista[0]  # se asume que lista es una matriz y lista[0] es para buscar la columna en la lista 
     contadorLlave = 0  # para recorrer la llave
 
     for pos1 in range(0, len(textoACifrar), 1):
@@ -146,7 +159,9 @@ while True:
      
 
     elif texto[0:12] == "encode-text ":
-        textoACifrar = texto[12:len(texto)]
+        textoUsuario = texto[12:len(texto)]
+        textoSinTilde = letra_con_tilde(textoUsuario)
+        textoACifrar = textoSinTilde
         cifrarTexto(llave,textoACifrar)
 
     elif texto[0:12] == "encode-file ":   
