@@ -1,6 +1,7 @@
 print("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ Bienvenido al codificador !!!!!!!!!!!!!!!")
 print("Creadores: Dostin Umaña Y Carlos Escobar")
 print("Codificador Enigma")
+
 def letra_con_tilde(texto):
     tildes = "áéíóúÁÉÍÓÚ"
     letras = "aeiouAEIOU"
@@ -11,6 +12,23 @@ def letra_con_tilde(texto):
             pos = tildes.index(l)
             letra = letras[pos]  # Reemplaza la letra tildada con la letra sin tilde
             texto_modificado += "/" + letra  # Reemplaza la letra tildada con / + letra
+        else:
+            texto_modificado += l  # Conserva la letra original si no tiene tilde
+    return texto_modificado
+
+def agregar_tilde(texto):
+    tildes = "áéíóúÁÉÍÓÚ"
+    letras = "aeiouAEIOU"
+    texto_modificado = ""
+
+    for l in texto:
+        if l == "/":
+            continue  # Ignora el carácter '/'
+
+        if texto_modificado and texto_modificado[-1] == "/":
+            pos = letras.index(l)
+            letra = tildes[pos]  # Reemplaza la letra sin tilde con la letra tildada
+            texto_modificado = texto_modificado[:-1] + letra  # Reemplaza la letra sin tilde con / + letra tildada
         else:
             texto_modificado += l  # Conserva la letra original si no tiene tilde
     return texto_modificado
@@ -159,10 +177,10 @@ while True:
      
 
     elif texto[0:12] == "encode-text ":
-        textoUsuario = texto[12:len(texto)]
-        textoSinTilde = letra_con_tilde(textoUsuario)
-        textoACifrar = textoSinTilde
-        cifrarTexto(llave,textoACifrar)
+        textoUsuario = texto[12:len(texto)] #se guarda unicamente el texto dado al usuario 
+        textoSinTilde = letra_con_tilde(textoUsuario) #se le quitan las tildes al texto 
+        textoACifrar = textoSinTilde #se guarda el texto sin tildes
+        cifrarTexto(llave,textoACifrar) #se llama a la funcion de cifrado
 
     elif texto[0:12] == "encode-file ":   
         print("Archivo a cifrar")
