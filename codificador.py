@@ -62,7 +62,7 @@ def cifrarTexto(llave, textoACifrar):
 
         else:
             text_codfificado += i # copia todo lo que no sea una letra del abecedario dado
-    print(text_codfificado)
+    # print(text_codfificado)
     return text_codfificado
 
 # def cifrarTexto(llave,textoACifrar):
@@ -95,6 +95,17 @@ def cifrarTexto(llave, textoACifrar):
 
 #     print(text_codfificado)
 #     return text_codfificado
+def mayuscula(textoDecifrado, textoUsuario):
+    textoDecifrado1 = ""
+    for l in range(len(textoUsuario)):
+        if textoUsuario[l].isupper():
+            textoDecifrado1 += textoDecifrado[l].upper()
+        elif textoUsuario[l].islower():
+            textoDecifrado1 += textoDecifrado[l].lower()
+        else:
+            textoDecifrado1 += textoDecifrado[l]
+    print(textoDecifrado1)
+    return textoDecifrado1
 
 def descifrarTexto(llave, textoAdecifrar):
     texto_descifrado = ''
@@ -122,8 +133,8 @@ def descifrarTexto(llave, textoAdecifrar):
         else:
             texto_descifrado += i  # copiar tal cual números, espacios, etc.
 
-    print(texto_descifrado)
-    return texto_descifrado
+    #print(texto_descifrado)
+    #return texto_descifrado
 
 #Lista
 lista = [
@@ -156,7 +167,7 @@ lista = [
 
 
 while True:
-    texto = input("codificador >> ").lower().strip()
+    texto = input("codificador >> ").strip()
     if texto == "quit":
         print("Saliendo ... \nGracias por usar nuestro codificador")
         break
@@ -179,8 +190,9 @@ while True:
     elif texto[0:12] == "encode-text ":
         textoUsuario = texto[12:len(texto)] #se guarda unicamente el texto dado al usuario 
         textoSinTilde = letra_con_tilde(textoUsuario) #se le quitan las tildes al texto 
-        textoACifrar = textoSinTilde #se guarda el texto sin tildes
-        cifrarTexto(llave,textoACifrar) #se llama a la funcion de cifrado
+        textoACifrar = textoSinTilde.lower() #se guarda el texto sin tildes
+        textoDecifrado = cifrarTexto(llave,textoACifrar) #se llama a la funcion de cifrado
+        Textofinal = mayuscula(textoDecifrado, textoUsuario)
 
     elif texto[0:12] == "encode-file ":   
         print("Archivo a cifrar")
