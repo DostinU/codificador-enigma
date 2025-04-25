@@ -31,7 +31,6 @@ def agregarTilde(textoDecifrado):
             texto_modificado = texto_modificado[:-1] + letra  # Reemplaza la letra sin tilde con \ + letra tildada
         else:
             texto_modificado += l  # Conserva la letra original si no tiene tilde
-    print(texto_modificado)  # Imprime el texto modificado
     return texto_modificado
 
 def codificarTexto(llave, textoSinTilde):
@@ -109,7 +108,6 @@ def descifrarTexto(llave, textoUsuario):
         else:
             texto_descifrado += i  # copiar tal cual números, espacios, etc.
 
-    print(texto_descifrado)
     return texto_descifrado
 
 
@@ -171,10 +169,11 @@ while True:
         print("resultado >>", cifrado_mayuscula)
 
     elif texto[0:12] == "decode-text ":
-        textoAdecifrar = texto[12:len(texto)]
-        textoDecifrado = descifrarTexto(llave, textoAdecifrar)
-        print("resultado >>", textoDecifrado)
-        # textoConTilde = agregarTilde(textoDecifrado)
+        textoAdecifrar = texto[12:len(texto)] #se guarda unicamente el texto codificado dado por el usuario
+        textoDecifrado = descifrarTexto(llave, textoAdecifrar) #Se manda a llamar a la función decifrarTexto y decifra el texto dado por el usuario
+        textoConMayuscula = mayuscula(textoDecifrado, textoAdecifrar) # Compara el texto decifrado con el texto dado por el usuario
+        textoConTilde = agregarTilde(textoConMayuscula) # verifica el texto y si tiene un back slash antes de una vocal le pone una tilde.
+        print("resultado >> ",textoConTilde)
 
 
     elif texto[0:12] == "encode-file ":   
