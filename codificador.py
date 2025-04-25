@@ -2,46 +2,46 @@ print("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ Bienvenido al codificador !!!!!!!!!!!!!!!"
 print("Creadores: Dostin Umaña Y Carlos Escobar")
 print("Codificador Enigma")
 
-def letra_con_tilde(decifrado_mayuscula):
+def quitarTilde(textoUsuario):
     tildes = "áéíóúÁÉÍÓÚ"
     letras = "aeiouAEIOU"
     texto_modificado = ""
 
-    for l in decifrado_mayuscula:
+    for l in textoUsuario:
         if l in tildes:
             pos = tildes.index(l)
             letra = letras[pos]  # Reemplaza la letra tildada con la letra sin tilde
-            texto_modificado += "/" + letra  # Reemplaza la letra tildada con / + letra
+            texto_modificado += "\\" + letra  # Reemplaza la letra tildada con \ + letra
         else:
-            texto_modificado += l  # Conserva la letra original si no tiene tilde
-    print(texto_modificado)  # Imprime el texto modificado
+            texto_modificado += l  # Conserva la letra original si no tiene tilde  # Imprime el texto modificado
     return texto_modificado
 
-def agregar_tilde(decifrado_mayuscula):
+def agregarTilde(textoDecifrado):
     tildes = "áéíóúÁÉÍÓÚ"
     letras = "aeiouAEIOU"
     texto_modificado = ""
 
-    for l in decifrado_mayuscula:
-        if l == "/":
-            continue  # Ignora el carácter '/'
+    for l in textoDecifrado:
+        if l == "\\":
+            pass  # Ignora el carácter '\'
 
-        if texto_modificado and texto_modificado[-1] == "/":
+        if texto_modificado and texto_modificado[-1] == "\\":
             pos = letras.index(l)
             letra = tildes[pos]  # Reemplaza la letra sin tilde con la letra tildada
-            texto_modificado = texto_modificado[:-1] + letra  # Reemplaza la letra sin tilde con / + letra tildada
+            texto_modificado = texto_modificado[:-1] + letra  # Reemplaza la letra sin tilde con \ + letra tildada
         else:
             texto_modificado += l  # Conserva la letra original si no tiene tilde
     print(texto_modificado)  # Imprime el texto modificado
     return texto_modificado
 
-def cifrarTexto(llave, textoACifrar):
-    text_codfificado = ''
+def codificarTexto(llave, textoSinTilde):
+    textoSinTilde = textoSinTilde.lower()  # se guarda el texto dado al usuario en minuscula
+    texto_codfificado = ''
     abc = lista[0]  # se asume que lista es una matriz y lista[0] es para buscar la columna en la lista 
     contadorLlave = 0  # para recorrer la llave
 
-    for pos1 in range(0, len(textoACifrar), 1):
-        i = textoACifrar[pos1]
+    for pos1 in range(0, len(textoSinTilde), 1):
+        i = textoSinTilde[pos1]
 
         if i in abc:
             contador1 = 0  # reiniciar para cada letra del texto
@@ -54,7 +54,7 @@ def cifrarTexto(llave, textoACifrar):
 
                     for fila in lista:
                         if letraLlave == fila[0]:
-                            text_codfificado += fila[columna]
+                            texto_codfificado += fila[columna]
                             break
                         contador += 1
 
@@ -63,58 +63,32 @@ def cifrarTexto(llave, textoACifrar):
                 contador1 += 1
 
         else:
-            text_codfificado += i # copia todo lo que no sea una letra del abecedario dado
-    # print(text_codfificado)
-    return text_codfificado
+            texto_codfificado += i # copia todo lo que no sea una letra del abecedario dado
+    return texto_codfificado
 
-# def cifrarTexto(llave,textoACifrar):
-    
-#     text_codfificado = ''
-#     contador = 0
-#     contador1 = 0
-#     abc = lista[0]
-# #Hola
-#     for pos1 in range(0,len(textoACifrar),1):
-#         i = textoACifrar[pos1]
-#         contador1 = 0
-#         if i == abc[0][contador1]:
-#             columna = contador1
-#             print(columna)  
-#             for pos in range(0,len(llave),1):
-#                 t = llave[pos]
-#                 print(t)
-#                 if t == abc[contador][0]:
-#                     text_codfificado += lista[contador][columna]
-#                     pos = contador  
-#                     print(text_codfificado)
-#                 contador+=1
-#                 break
-#         contador1+=1      
-            
-            
-# #lemon            
-      
 
-#     print(text_codfificado)
-#     return text_codfificado
-def mayuscula(textoDecifrado, textoUsuario):
-    textoDecifrado1 = ""
-    for l in range(len(textoUsuario)):
-        if textoUsuario[l].isupper():
-            textoDecifrado1 += textoDecifrado[l].upper()
-        elif textoUsuario[l].islower():
-            textoDecifrado1 += textoDecifrado[l].lower()
+def mayuscula(textocifrado, textoSinTilde):
+    textocifrado1 = ""
+    for l in range(len(textoSinTilde)):
+        if textoSinTilde[l] == "\\":
+            pass
+        if textoSinTilde[l].isupper():
+            textocifrado1 += textocifrado[l].upper()
+        elif textoSinTilde[l].islower():
+            textocifrado1 += textocifrado[l].lower()
         else:
-            textoDecifrado1 += textoDecifrado[l]
-    return textoDecifrado1
+            textocifrado1 += textocifrado[l]
+    return textocifrado1
 
-def descifrarTexto(llave, textoAcodificar):
+
+
+def descifrarTexto(llave, textoUsuario):
     texto_descifrado = ''
     abc = lista[0]  # lista[0] es el abecedario
     contadorLlave = 0
 
-    for pos1 in range(len(textoAcodificar)):
-        i = textoAcodificar[pos1]
+    for pos1 in range(len(textoUsuario)):
+        i = textoUsuario[pos1]
 
         if i in abc:
             letraLlave = llave[contadorLlave % len(llave)]
@@ -134,10 +108,10 @@ def descifrarTexto(llave, textoAcodificar):
         else:
             texto_descifrado += i  # copiar tal cual números, espacios, etc.
 
-    #print(texto_descifrado)
-    #return texto_descifrado
+    print(texto_descifrado)
+    return texto_descifrado
 
-#Lista
+
 lista = [
 ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
 ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'a'],
@@ -190,32 +164,28 @@ while True:
 
     elif texto[0:12] == "encode-text ":
         textoUsuario = texto[12:len(texto)] #se guarda unicamente el texto dado al usuario 
-        textoAcodificar = textoUsuario.lower() #se guarda el texto dado al usuario en minuscula
-        # textoSinTilde = letra_con_tilde(textoUsuario) #se le quitan las tildes al texto 
-        # textoACifrar = textoSinTilde.lower() #se guarda el texto sin tildes
-        textoDecifrado = cifrarTexto(llave,textoAcodificar) #se llama a la funcion de cifrado
-        decifrado_mayuscula = mayuscula(textoDecifrado, textoUsuario)
-        decofrador_con_tilde = letra_con_tilde(decifrado_mayuscula)
-
-    elif texto[0:12] == "encode-file ":   
-        print("Archivo a cifrar")
+        textoSinTilde = quitarTilde(textoUsuario).strip() #se llama a la funcion de quitar tildes para quitar las tildes del texto
+        textocifrado = codificarTexto(llave,textoSinTilde) #se llama a la funcion de cifrado para cifrar el texto sin tildes
+        cifrado_mayuscula = mayuscula(textocifrado,textoSinTilde ) #se llama a la funcion de mayuscula para que el cifrado mantenga las mayusculas y minusculas del texto original
+        print("resultado >>", cifrado_mayuscula)
 
     elif texto[0:12] == "decode-text ":
         textoAdecifrar = texto[12:len(texto)]
-        descifrarTexto(llave, textoAdecifrar)   
-        print("Texto a descifrar")
+        textoDecifrado = descifrarTexto(llave, textoAdecifrar)
+        print("resultado >>", textoDecifrado)
+        # textoConTilde = agregarTilde(textoDecifrado)
+
+
+    elif texto[0:12] == "encode-file ":   
+        print("Archivo a cifrar")
 
     elif texto[0:12] == "decode-file ":   
         print("Archivo a descifrar")
 
     else:
         print("ERROR! Expresión no valida")
-        
 
-        
-
-
-
+#Ssxo Zfrpc! Gprsc 5 Zlc\ggPfpmg
 
 
 
