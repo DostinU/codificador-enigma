@@ -86,6 +86,7 @@ def descifrarTexto(llave, textoUsuario):
     texto_descifrado = ''
     abc = lista[0]  # lista[0] es el abecedario
     contadorLlave = 0
+    textoUsuario = textoUsuario.lower()  # se guarda el texto dado al usuario en minuscula
 
     for pos1 in range(len(textoUsuario)):
         i = textoUsuario[pos1]
