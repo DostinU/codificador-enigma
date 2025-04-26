@@ -30,8 +30,7 @@ def agregarTilde(textoDecifrado):
             letra = tildes[pos]  # Reemplaza la letra sin tilde con la letra tildada
             texto_modificado = texto_modificado[:-1] + letra  # Reemplaza la letra sin tilde con \ + letra tildada
         else:
-            texto_modificado += l  # Conserva la letra original si no tiene tilde
-    print(texto_modificado)  # Imprime el texto modificado
+            texto_modificado += l  # Conserva la letra original si no tiene tilde 
     return texto_modificado
 
 def codificarTexto(llave, textoSinTilde):
@@ -185,8 +184,6 @@ while True:
 
     else:
         print("ERROR! Expresión no valida")
-
-#Ssxo Zfrpc! Gprsc 5 Zlc\ggPfpmg
 
 
 
