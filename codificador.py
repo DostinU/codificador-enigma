@@ -1,39 +1,67 @@
+import os #mapea las rutas del directorio de tus archivos
 print("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ Bienvenido al codificador !!!!!!!!!!!!!!!")
-print("Creadores: Dostin Umaña Y Carlos Escobar")
+print("Creadores: ")
+print("24000286 - Dostin Umaña - Sección BN")
+print("24001994 - Carlos Escobar - Sección BN")
+
 print("Codificador Enigma")
 
-def quitarTilde(textoUsuario):
+def quitarTilde(textoUsuario): #La función recibe el texto del usuario y le quita las tildes
     tildes = "áéíóúÁÉÍÓÚ"
     letras = "aeiouAEIOU"
-    texto_modificado = ""
+    textoModificado = ""
 
     for l in textoUsuario:
-        if l in tildes:
+        if l == "\\":
+            textoModificado += "\\" + l
+        elif l in tildes:
             pos = tildes.index(l)
             letra = letras[pos]  # Reemplaza la letra tildada con la letra sin tilde
-            texto_modificado += "\\" + letra  # Reemplaza la letra tildada con \ + letra
+            textoModificado += "\\" + letra  # Reemplaza la letra tildada con \ + letra   
         else:
-            texto_modificado += l  # Conserva la letra original si no tiene tilde  # Imprime el texto modificado
-    return texto_modificado
+            textoModificado += l  # Conserva la letra original si no tiene tilde  # Imprime el texto modificado
+    return textoModificado
 
-def agregarTilde(textoDecifrado):
-    tildes = "áéíóúÁÉÍÓÚ"
+def agregarTilde(textoDecifrado): #Sirve para cuando codificamos y revisa si antes de una vocal hay una \ y si existe la diagnal la cambia por una vocal y 
+    tildes = "áéíóúÁÉÍÓÚ"         # en dado caso sean \\ elimina una de las \ y deja solo una, luego especifica que la siguiente letra no lleva tilde.
     letras = "aeiouAEIOU"
     texto_modificado = ""
+    saltarTilde = False  # Nuevo indicador
 
-    for l in textoDecifrado:
+    i = 0
+    while i < len(textoDecifrado): #Hola \\a
+        l = textoDecifrado[i]
+
         if l == "\\":
-            pass  # Ignora el carácter '\'
+            # Verificar si hay dos barras invertidas seguidas
+            if i + 1 < len(textoDecifrado) and textoDecifrado[i + 1] == "\\": #Evaluamos si la siguiente posicion es una diagonal
+                texto_modificado += "\\"  # Agrega solo una barra
+                saltarTilde = True  # Indicar que no se debe poner tilde a la siguiente letra
+                i += 2  # Saltar las dos barras
+                continue
+            else:
+                # Solo una barra, se manejará en el siguiente paso
+                texto_modificado += "\\"
+                i += 1
+                continue
 
-        if texto_modificado and texto_modificado[-1] == "\\":
-            pos = letras.index(l)
-            letra = tildes[pos]  # Reemplaza la letra sin tilde con la letra tildada
-            texto_modificado = texto_modificado[:-1] + letra  # Reemplaza la letra sin tilde con \ + letra tildada
-        else:
-            texto_modificado += l  # Conserva la letra original si no tiene tilde
+        if texto_modificado and texto_modificado[-1] == "\\" and not saltarTilde: #and not " Si tilde es igual a falso"
+            if l in letras:
+                pos = letras.index(l)
+                letra = tildes[pos]  # Reemplaza la letra sin tilde con la letra tildada
+                texto_modificado = texto_modificado[:-1] + letra  # Reemplaza la barra + letra tildada
+            else:
+                texto_modificado += l 
+        else: # si saltar Tilde es igual a verdadero: solo se copia la letra
+            texto_modificado += l 
+
+        saltarTilde = False  # Reiniciar el indicador
+        i += 1
+
     return texto_modificado
 
-def codificarTexto(llave, textoSinTilde):
+
+def codificarTexto(llave, textoSinTilde): #Le asigna un valor de la llave a cada letra del texto y en base a estos dos busca la fila y columna de la matriz donde coincidan las posiciones de las dos letras.
     textoSinTilde = textoSinTilde.lower()  # se guarda el texto dado al usuario en minuscula
     texto_codfificado = ''
     abc = lista[0]  # se asume que lista es una matriz y lista[0] es para buscar la columna en la lista 
@@ -66,7 +94,7 @@ def codificarTexto(llave, textoSinTilde):
     return texto_codfificado  
 
 
-def mayuscula(textocifrado, textoSinTilde):
+def mayuscula(textocifrado, textoSinTilde): #Compara el texto cifrado con el texto sin cifrar, para encontrar en que posicion se encuentra una mayuscula y si la encuentra la coloca en el texto cifrado
     textocifrado1 = ""
     for l in range(len(textoSinTilde)):
         if textoSinTilde[l] == "\\":
@@ -81,7 +109,7 @@ def mayuscula(textocifrado, textoSinTilde):
 
 
 
-def descifrarTexto(llave, textoUsuario):
+def descifrarTexto(llave, textoUsuario): #Con la posicion de la llave que es la fila busca la letra del texto codificado en esa fila y luego con ese indice busca en las columnas
     texto_descifrado = ''
     abc = lista[0]  # lista[0] es el abecedario
     contadorLlave = 0
@@ -146,21 +174,24 @@ while True:
         print("Saliendo ... \nGracias por usar nuestro codificador")
         break
     elif texto[0:7] == "setkey ":
-        llave = texto[7:len(texto)] 
-        numeros = "0123456789"
-        hay_numero = False #Validación del setkey
-        for i in llave:
-            for n in numeros:
-                if i == n:
-                    hay_numero = True
-                    break
-        if hay_numero == False:
-            print("LLave Aceptada")
+        llave = texto[7:len(texto)]
+        espacio = " "
+        if espacio in llave:
+            print("ERROR! Expresion no valida") 
+        else:    
+            numeros = "0123456789"
+            hay_numero = False #Validación del setkey
+            for i in llave:
+                for n in numeros:
+                    if i == n:
+                        hay_numero = True
+                        break
+            if hay_numero == False:
+                print("LLave Aceptada")
 
-        else:
-            print("ERROR! Expresión no valida")      
+            else:
+                print("ERROR! Expresión no valida")      
      
-
     elif texto[0:12] == "encode-text ":
         if llave != "":
             textoUsuario = texto[12:len(texto)] #se guarda unicamente el texto dado al usuario 
@@ -174,7 +205,7 @@ while True:
     elif texto[0:12] == "decode-text ":
         if llave != "":
             textoAdecifrar = texto[12:len(texto)] #se guarda unicamente el texto codificado dado por el usuario
-            textoDecifrado = descifrarTexto(llave, textoAdecifrar) #Se manda a llamar a la función decifrarTexto y decifra el texto dado por el usuario
+            textoDecifrado = descifrarTexto(llave,textoAdecifrar) #Se manda a llamar a la función decifrarTexto y decifra el texto dado por el usuario
             textoConMayuscula = mayuscula(textoDecifrado, textoAdecifrar) # Compara el texto decifrado con el texto dado por el usuario
             textoConTilde = agregarTilde(textoConMayuscula) # verifica el texto y si tiene un back slash antes de una vocal le pone una tilde.
             print("resultado >> ",textoConTilde)
@@ -192,29 +223,54 @@ while True:
                     break
                 else:
                     llave1 = llave
-                    archivo = texto[12:len(texto)] 
+                    archivo = texto[12:len(texto)]   
 
-            file = open(archivo,"rt",encoding="utf-8") # se investio el "encoding = utf-8" el cual es para indicar que es el estándar para caracteres como á, é, í, ó, ú, ñ, etc.
-            leerLineas = file.read()  #lee todas las lineas pero no las guardar en lista
-            archivoSinTilde = quitarTilde(leerLineas)
-            archivoCodificado = codificarTexto(llave1,archivoSinTilde)
-            archivoConMayuscula = mayuscula(archivoCodificado,archivoSinTilde) #Archivo codificado
-            file.close()
-            archivo1 = archivo[0:-3] + "gcf"
-            file2 = open(archivo1,"w",encoding="utf-8")#Creamos Archivo y escribimos en el
-            file2.write(archivoConMayuscula)
-            file2.close()
-            print("resultado >> archivo codificado en",archivo1)
-            # file2 = open(archivo1,"r",encoding="utf-8") #Abrimos archivo para poder leerlo
-            # leerLineas1 = file2.read()
+            if os.path.exists(archivo):    #Sirve para comprobar si el archivo existe en tu disco
+                file = open(archivo,"rt",encoding="utf-8") # se investio el "encoding = utf-8" el cual es para indicar que es el estándar para caracteres como á, é, í, ó, ú, ñ, etc.             
+                leerLineas = file.read()  #lee todas las lineas pero no las guardar en lista
+                archivoSinTilde = quitarTilde(leerLineas)
+                archivoCodificado = codificarTexto(llave1,archivoSinTilde)
+                archivoConMayuscula = mayuscula(archivoCodificado,archivoSinTilde) #Archivo codificado
+                file.close()
+                archivo1 = archivo[0:-3] + "gcf"
+                file2 = open(archivo1,"w",encoding="utf-8")#Creamos Archivo y escribimos en el
+                file2.write(archivoConMayuscula)
+                file2.close()
+                print("resultado >> archivo codificado en",archivo1)
+            else:
+                print(f"ERROR! {archivo} no existe.") 
+            
         else:   
             print("Error debe definir una llave.") 
 
     elif texto[0:12] == "decode-file ":
-        if llave != "":    
-            
+        if llave != "":
+            restante = texto[12:len(texto)]
+            for i in restante:
+                if i == " ":
+                    posEspacio = restante.index(i) #posicion donde se encuentra le espacio
+                    llave1 = restante[0:posEspacio]
+                    archivo = restante[(posEspacio+1):len(restante)]
+                    break
+                else:
+                    llave1 = llave
+                    archivo = texto[12:len(texto)]
+            if os.path.exists(archivo):
+                file = open(archivo,"r",encoding="utf-8") #Abrimos archivo para poder leerlo
+                leerLineas = file.read()
+                archivoDecifrado = descifrarTexto(llave1,leerLineas)
+                archivoConMayusculas = mayuscula(archivoDecifrado,leerLineas)
+                archivoConTildes = agregarTilde(archivoConMayusculas)
+                file.close()
 
-            print("Archivo a descifrar")
+                archivo1 = archivo[0:-4] + "-decoded.txt"
+                file2 = open(archivo1,"w",encoding="utf-8")#Creamos Archivo y escribimos en el
+                file2.write(archivoConTildes)
+                file2.close()
+                print("resultado >> archivo decodificado en",archivo1)
+            else:
+                print(f"ERROR! {archivo} no existe.") 
+
         else:   
             print("Error debe definir una llave.")     
 
