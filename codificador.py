@@ -63,7 +63,7 @@ def codificarTexto(llave, textoSinTilde):
 
         else:
             texto_codfificado += i # copia todo lo que no sea una letra del abecedario dado
-    return texto_codfificado
+    return texto_codfificado  
 
 
 def mayuscula(textocifrado, textoSinTilde):
@@ -139,14 +139,14 @@ lista = [
 ['y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x'],
 ['z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v','w','x','y']]
 
-
+llave = ""
 while True:
     texto = input("codificador >> ").strip()
     if texto == "quit":
         print("Saliendo ... \nGracias por usar nuestro codificador")
         break
     elif texto[0:7] == "setkey ":
-        llave = texto[7:len(texto)]
+        llave = texto[7:len(texto)] 
         numeros = "0123456789"
         hay_numero = False #Validación del setkey
         for i in llave:
@@ -158,29 +158,65 @@ while True:
             print("LLave Aceptada")
 
         else:
-            print("ERROR! Expresión no valida") 
+            print("ERROR! Expresión no valida")      
      
 
     elif texto[0:12] == "encode-text ":
-        textoUsuario = texto[12:len(texto)] #se guarda unicamente el texto dado al usuario 
-        textoSinTilde = quitarTilde(textoUsuario).strip() #se llama a la funcion de quitar tildes para quitar las tildes del texto
-        textocifrado = codificarTexto(llave,textoSinTilde) #se llama a la funcion de cifrado para cifrar el texto sin tildes
-        cifrado_mayuscula = mayuscula(textocifrado,textoSinTilde ) #se llama a la funcion de mayuscula para que el cifrado mantenga las mayusculas y minusculas del texto original
-        print("resultado >>", cifrado_mayuscula)
+        if llave != "":
+            textoUsuario = texto[12:len(texto)] #se guarda unicamente el texto dado al usuario 
+            textoSinTilde = quitarTilde(textoUsuario).strip() #se llama a la funcion de quitar tildes para quitar las tildes del texto
+            textocifrado = codificarTexto(llave,textoSinTilde) #se llama a la funcion de cifrado para cifrar el texto sin tildes
+            cifrado_mayuscula = mayuscula(textocifrado,textoSinTilde ) #se llama a la funcion de mayuscula para que el cifrado mantenga las mayusculas y minusculas del texto original
+            print("resultado >>", cifrado_mayuscula)
+        else:   
+            print("Error debe definir una llave.") 
 
     elif texto[0:12] == "decode-text ":
-        textoAdecifrar = texto[12:len(texto)] #se guarda unicamente el texto codificado dado por el usuario
-        textoDecifrado = descifrarTexto(llave, textoAdecifrar) #Se manda a llamar a la función decifrarTexto y decifra el texto dado por el usuario
-        textoConMayuscula = mayuscula(textoDecifrado, textoAdecifrar) # Compara el texto decifrado con el texto dado por el usuario
-        textoConTilde = agregarTilde(textoConMayuscula) # verifica el texto y si tiene un back slash antes de una vocal le pone una tilde.
-        print("resultado >> ",textoConTilde)
+        if llave != "":
+            textoAdecifrar = texto[12:len(texto)] #se guarda unicamente el texto codificado dado por el usuario
+            textoDecifrado = descifrarTexto(llave, textoAdecifrar) #Se manda a llamar a la función decifrarTexto y decifra el texto dado por el usuario
+            textoConMayuscula = mayuscula(textoDecifrado, textoAdecifrar) # Compara el texto decifrado con el texto dado por el usuario
+            textoConTilde = agregarTilde(textoConMayuscula) # verifica el texto y si tiene un back slash antes de una vocal le pone una tilde.
+            print("resultado >> ",textoConTilde)
+        else:   
+            print("Error debe definir una llave.")    
 
+    elif texto[0:12] == "encode-file ":
+        if llave != "":
+            restante = texto[12:len(texto)]
+            for i in restante:
+                if i == " ":
+                    posEspacio = restante.index(i) #posicion donde se encuentra le espacio
+                    llave1 = restante[0:posEspacio]
+                    archivo = restante[(posEspacio+1):len(restante)]
+                    break
+                else:
+                    llave1 = llave
+                    archivo = texto[12:len(texto)] 
 
-    elif texto[0:12] == "encode-file ":   
-        print("Archivo a cifrar")
+            file = open(archivo,"rt",encoding="utf-8") # se investio el "encoding = utf-8" el cual es para indicar que es el estándar para caracteres como á, é, í, ó, ú, ñ, etc.
+            leerLineas = file.read()  #lee todas las lineas pero no las guardar en lista
+            archivoSinTilde = quitarTilde(leerLineas)
+            archivoCodificado = codificarTexto(llave1,archivoSinTilde)
+            archivoConMayuscula = mayuscula(archivoCodificado,archivoSinTilde) #Archivo codificado
+            file.close()
+            archivo1 = archivo[0:-3] + "gcf"
+            file2 = open(archivo1,"w",encoding="utf-8")#Creamos Archivo y escribimos en el
+            file2.write(archivoConMayuscula)
+            file2.close()
+            print("resultado >> archivo codificado en",archivo1)
+            # file2 = open(archivo1,"r",encoding="utf-8") #Abrimos archivo para poder leerlo
+            # leerLineas1 = file2.read()
+        else:   
+            print("Error debe definir una llave.") 
 
-    elif texto[0:12] == "decode-file ":   
-        print("Archivo a descifrar")
+    elif texto[0:12] == "decode-file ":
+        if llave != "":    
+            
+
+            print("Archivo a descifrar")
+        else:   
+            print("Error debe definir una llave.")     
 
     else:
         print("ERROR! Expresión no valida")
@@ -191,5 +227,4 @@ while True:
 
 
 
-
-
+ 
