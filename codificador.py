@@ -277,8 +277,6 @@ while True:
     else:
         print("ERROR! Expresión no valida")
 
-#Ssxo Zfrpc! Gprsc 5 Zlc\ggPfpmg
-
 
 
 
